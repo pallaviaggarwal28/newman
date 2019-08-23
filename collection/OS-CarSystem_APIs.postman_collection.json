@@ -1,0 +1,286 @@
+{
+  "info": {
+    "_postman_id": "b2378b36-43c2-4310-8ff2-7540e96acf4f",
+    "name": "OS-CarSystem API's",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Find car system for a valid given market based on name and type",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "6ac84a01-7cb2-4454-9032-5e0746786575",
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {",
+              "       pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Body matches String and contains non empty array\", function() {",
+              "var jsonData = pm.response.json();",
+              "var result = pm.response.text();",
+              "   pm.expect(result).to.include(\"supportMarket\");",
+              "   pm.expect(jsonData.details.softwareDetails).to.be.an(\"array\").that.is.not.empty;",
+              "   pm.expect(jsonData.details.relatedArticles).to.be.an(\"array\").that.is.not.empty;",
+              "   pm.expect(jsonData.details.applicableTo).to.be.an(\"array\").that.is.not.empty;",
+              "   pm.expect(result).to.include(\"name\");",
+              "   pm.expect(result).to.include(\"type\");",
+              "   pm.expect(result).to.include(\"title\");",
+              "   pm.expect(result).to.include(\"imageUrl\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{url}}/v1/car-systems/{{market-id}}/{{type}}/{{name}}/details",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v1",
+            "car-systems",
+            "{{market-id}}",
+            "{{type}}",
+            "{{name}}",
+            "details"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Find car system for a given market based on invalid name and gracenote type",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "4a688cf0-67f5-4807-96b2-1ede299ac6dd",
+            "exec": [
+              "pm.test(\"Status code is 404\", function() {",
+              "       pm.response.to.have.status(404);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{url}}/v1/car-systems/{{market-id}}/{{type}}/{{invalid.name}}/details",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v1",
+            "car-systems",
+            "{{no.data.market-id}}",
+            "{{type}}",
+            "{{invalid.name}}",
+            "details"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Find car system for a valid given market based on name and invalid type",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "8aafaec3-e30a-4f0b-a254-3b7a065dbfce",
+            "exec": [
+              "pm.test(\"Status code is 400\", function() {",
+              "       pm.response.to.have.status(400);",
+              "});",
+              "pm.test(\"Body matches string\", function () {",
+              "    pm.expect(pm.response.text()).to.include(\"path param type must be one of [MAP, SPEECH, GRACENOTE]\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{url}}/v1/car-systems/{{market-id}}/{{invalid.type}}/{{name}}/details",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v1",
+            "car-systems",
+            "{{market-id}}",
+            "{{invalid.type}}",
+            "{{name}}",
+            "details"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Find minimal car systems for given valid market and type",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "57dc00fc-38ae-4cfc-a0c8-15c07760fda3",
+            "exec": [
+              "pm.test(\"Status code is 200\", function() {",
+              "       pm.response.to.have.status(200);",
+              "});",
+              "    pm.test(\"Body matches String and contains non empty array\", function() {",
+              "    var jsonData = pm.response.json();",
+              "    var result = pm.response.text();",
+              "    pm.expect(jsonData).to.be.an(\"array\").that.is.not.empty;",
+              "    pm.expect(result).to.include(\"description\");",
+              "    pm.expect(result).to.include(\"articleId\");",
+              "    pm.expect(result).to.include(\"name\");",
+              "    pm.expect(result).to.include(\"type\");",
+              "    pm.expect(result).to.include(\"title\");",
+              "    pm.expect(result).to.include(\"imageUrl\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{url}}/v1/car-systems/{{market-id}}/{{type}}",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v1",
+            "car-systems",
+            "{{market-id}}",
+            "{{type}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Find minimal car systems for a valid given market based invalid type",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "31bb21aa-ac8d-4602-b278-1a967da1c3d6",
+            "exec": [
+              "pm.test(\"Status code is 400\", function() {",
+              "       pm.response.to.have.status(400);",
+              "});",
+              "pm.test(\"Body matches string\", function () {",
+              "    pm.expect(pm.response.text()).to.include(\"path param type must be one of [MAP, SPEECH, GRACENOTE]\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{url}}/v1/car-systems/{{market-id}}/{{invalid.type}}",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "v1",
+            "car-systems",
+            "{{market-id}}",
+            "{{invalid.type}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "5363bdc3-8ada-4b55-9290-510b01a87996",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "f2586fd6-80e9-4a01-a908-966ffe7f67b0",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}

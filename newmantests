@@ -1,0 +1,127 @@
+#!/bin/sh
+
+set -o errexit
+set +e
+
+DIR=$(cd $(dirname "$0"); pwd)
+PROP_FILE="${DIR}/properties.json"
+declare -i STATUS_CODE=0
+
+while getopts 'e:c:m:' OPTION; do
+    case "$OPTION" in
+        e) envfile="${OPTARG}"
+           if [ "$envfile" == "" ] || [ -z "${envfile}" ] ; then
+             ENV_PROP="development"
+             echo "Running tests on development env, as no env was provided"
+           else
+             ENV_PROP="$envfile"
+             echo $ENV_PROP
+           fi
+           ;;
+        c) collectionsName="${OPTARG}"
+           if [ "$collectionsName" == "" ] || [ -z "${collectionsName}" ] ; then
+             COLLECTION_NAME="all"
+             echo "Running tests for all collections"
+           else
+             COLLECTION_NAME="$collectionsName"
+             echo $COLLECTION_NAME
+           fi
+           ;;
+        m) marketName="${OPTARG}"
+           if [ "$marketName" == "" ] || [ -z "${marketName}" ] ; then
+             MARKET_NAME="all"
+             echo "Running tests for all markets"
+           else
+             MARKET_NAME="$marketName"
+             echo $MARKET_NAME
+           fi
+           ;;
+        ?) echo "script usage: $(basename $0) [-e env name] [-c collection name | all] [-m market name | all]" >&2
+           exit 1
+           ;;
+    esac
+done
+shift $(( OPTIND - 1 ))
+
+envFileName=$(jq -r .globalEnvironment.${ENV_PROP} ${PROP_FILE})
+ENV_FILE="${DIR}/environment/${envFileName}"
+
+COLLECTIONS_LIST=$(jq -r '.collections | to_entries[] | "\(.value)"' ${PROP_FILE})
+
+for collection in ${COLLECTIONS_LIST} ; do
+    echo "$collection" > temp.json
+    collectionName=$(jq -r .name temp.json)
+
+    if [ "${COLLECTION_NAME}" != "all" ] ; then
+        file="${DIR}/collection/${COLLECTION_NAME}"
+        NAME=$(basename ${COLLECTION_NAME} .postman_collection.json)
+        if [[ ! -f "${file}" ]] ; then
+            echo "ERROR: No collection file exists for collection: ${COLLECTION_NAME}"
+            continue
+        fi
+        if [ ${COLLECTION_NAME} != ${collectionName} ] ; then
+            continue
+        fi
+    else
+        file="${DIR}/collection/${collectionName}"
+        NAME=$(basename ${collectionName} .postman_collection.json)
+        if [[ ! -f "${file}" ]] ; then
+            echo "ERROR: No collection file exists for collection: ${collectionName}"
+            continue
+        fi
+    fi
+
+    if [ "${MARKET_NAME}" != "all" ] ; then
+        data_file_name=$(jq -r .data.${MARKET_NAME}.name temp.json )
+        iteration_count=$(jq -r .data.${MARKET_NAME}.iterationCount temp.json )
+
+        if [[ -f "${DIR}/data/${MARKET_NAME}/${data_file_name}" ]] ; then
+           DATA="--iteration-data ${DIR}/data/${MARKET_NAME}/${data_file_name} --iteration-count ${iteration_count}"
+        else
+           echo "ERROR: No data file to run the tests for market: ${MARKET_NAME}"
+           continue
+        fi
+        echo "Running tests for collection ${NAME} and market ${MARKET_NAME}"
+        newman run ${file} --environment ${ENV_FILE} ${DATA} --reporters cli,junit,htmlextra --reporter-junit-export smokeTest/$NAME/report.xml --reporter-htmlextra-export smokeTest/$NAME/report.html
+
+        count=$?
+        STATUS_CODE=$((STATUS_CODE+count))
+
+    elif [ ! -z "${collection}.data" ] ; then
+        dataMarketList=$(jq -r '.data | to_entries | .[] | .key' temp.json )
+
+        for market in ${dataMarketList}; do
+            data_file_name=$(jq -r .data.${market}.name temp.json )
+            iteration_count=$(jq -r .data.${market}.iterationCount temp.json )
+
+            if [[ -f "${DIR}/data/${market}/${data_file_name}" ]] ; then
+                DATA="--iteration-data ${DIR}/data/${market}/${data_file_name} --iteration-count ${iteration_count}"
+            else
+                echo "ERROR: No data file to run the tests for market: ${market}"
+                continue
+            fi
+            echo "Running tests for collection ${NAME} and market ${market}"
+            newman run ${file} --environment ${ENV_FILE} ${DATA} --reporters cli,junit,htmlextra --reporter-junit-export smokeTest/$NAME/report.xml --reporter-htmlextra-export smokeTest/$NAME/report.html
+
+            count=$?
+            STATUS_CODE=$((STATUS_CODE+count))
+        done
+    fi
+done
+echo $STATUS_CODE
+if [ $STATUS_CODE -gt 0 ] ; then
+    echo "Build failed"
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+

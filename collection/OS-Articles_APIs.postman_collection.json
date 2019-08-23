@@ -1,0 +1,771 @@
+{
+	"info": {
+		"_postman_id": "2239ff23-db90-4ea8-8bff-6ac115e97862",
+		"name": "OS - Articles API's",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Find all articles for a valid market-id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a474432a-e512-4f30-a5b8-da95194eab14",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body does not contain blank arrays\",function() {",
+							"var result = pm.response.json();",
+							"    pm.expect(result.data).to.be.an(\"array\").that.is.not.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/by-market/{{market-id}}?offset=0&limit=15",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"by-market",
+						"{{market-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all articles for a invalid market-id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "be8d3cfd-63e2-4eb0-82f6-e59f93566be9",
+						"exec": [
+							"pm.test(\"Status code is 400\", function() {",
+							"pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Body matches string \",function() {",
+							"    pm.expect(pm.response.text()).to.include(\"path param market must be one of\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/by-market/{{invalid.market-id}}?offset=0&limit=15",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"by-market",
+						"{{invalid.market-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest published version of article for specific car based on market, project code, structureWeek and externalId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "20a1c811-7df3-4a72-9579-d527a4f53120",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function() {",
+							"var result = pm.response.text();",
+							"var resultJson = pm.response.json();",
+							"pm.expect(result).to.include(\"ref\");",
+							"pm.expect(result).to.include(\"externalId\");",
+							"pm.expect(result).to.include(\"structureWeek\");",
+							"pm.expect(result).to.include(\"title\");",
+							"pm.expect(resultJson.documentType).to.be.equal(\"ownersManual\")",
+							"pm.expect(resultJson.relatedArticles).to.be.an(\"array\").that.is.not.empty;",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{project_code}}/{{structure_week}}/{{ownersManual_external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{project_code}}",
+						"{{structure_week}}",
+						"{{ownersManual_external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest published version of article for specific car based on inactive market and valid project code, structureWeek and externalId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fd7d7a60-76f3-4ea7-a6c7-0b62f6ff609a",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"pm.response.to.have.status(404);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{no.data.market-id}}/{{project_code}}/{{structure_week}}/{{supportArticle.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{no.data.market-id}}",
+						"{{project_code}}",
+						"{{structure_week}}",
+						"{{supportArticle.external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest published version of article for specific car based on valid market,project code, structureWeek and invalid externalId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b74878ea-d5ac-4bb8-a33a-dc0cb9146e96",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"pm.response.to.have.status(404);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{project_code}}/{{structure_week}}/{{invalid.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{project_code}}",
+						"{{structure_week}}",
+						"{{invalid.external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest published version of article for specific car based on valid market,project code, externalId and invalid structureWeek",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "655e4a2f-9c04-4524-992a-777ef538b04",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"pm.response.to.have.status(404);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{project_code}}/{{invalid.structure_week}}/{{supportArticle.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{project_code}}",
+						"{{invalid.structure_week}}",
+						"{{supportArticle.external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest published version of article for specific car based on valid market,externalId, structureWeek and invalid project code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0e77eff9-fb5d-42a4-8ac6-1f2f6584b82f",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"pm.response.to.have.status(404);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{invalid.project_code}}/{{structure_week}}/{{supportArticle.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{invalid.project_code}}",
+						"{{structure_week}}",
+						"{{supportArticle.external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest published version - or the version specified - of an article based on market and externalId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "aa20a685-ae5b-4e82-867f-bf7eb1356f15",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches String and does not contain blank arrays\",function() {",
+							"var resultJson = pm.response.json();",
+							"var result = pm.response.text();",
+							"    pm.expect(resultJson.relatedArticles).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(resultJson.relatedCategories).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(result).to.include(\"ref\");",
+							"    pm.expect(result).to.include(\"externalId\");",
+							"    pm.expect(result).to.include(\"marketId\");",
+							"    pm.expect(result).to.include(\"title\");",
+							"    pm.expect(result).to.include(\"description\");",
+							"    pm.expect(result).to.include(\"content\");",
+							"pm.expect(resultJson.documentType).to.be.equal(\"supportArticle\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{supportArticle.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{supportArticle.external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find latest published version - or the version specified - of an article based on valid market and invalid externalId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d97cf5f5-3d04-4b5c-8e08-9aff6ddf64f",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{invalid.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{invalid.external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get information about what published versions are available for a specific article.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "39b9e950-d6fa-4187-8147-a38ae399f209",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches String\",function() {",
+							"var result = pm.response.text();",
+							"    pm.expect(result).to.include(\"externalId\");",
+							"    pm.expect(result).to.include(\"version\");",
+							"    pm.expect(result).to.include(\"consentNeeded\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{supportArticle.external_id}}/versions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{supportArticle.external_id}}",
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get information about what published versions are available for a specific article for valid market and invalid externalId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "13d0c582-4f2c-49c3-a71a-d2bb9e55fd83",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/{{market-id}}/{{invalid.external_id}}/versions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"{{market-id}}",
+						"{{invalid.external_id}}",
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find categories by market for a valid market Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "279b4dc7-dcfc-41e5-90b5-8acf74cd5e39",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body does not contain blank arrays\",function() {",
+							"var result = pm.response.json();",
+							"    pm.expect(result).to.be.an(\"array\").that.is.not.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/categories/{{market-id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"categories",
+						"{{market-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find categories by market for an invalid market Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b6f37080-7c90-4d88-b271-a3260caade48",
+						"exec": [
+							"pm.test(\"Status code is 400\", function() {",
+							"pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"path param market must be one of\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/categories/{{invalid.market-id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"categories",
+						"{{invalid.market-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find categories by external id for valid marketId and external id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d0a7b4c4-344d-4a86-a562-b96e316e07b0",
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches String and does not contain blank arrays\",function() {",
+							"var resultJson = pm.response.json();",
+							"var result = pm.response.text();",
+							"    pm.expect(resultJson.relatedArticles).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(result).to.include(\"externalId\");",
+							"    pm.expect(result).to.include(\"marketId\");",
+							"    pm.expect(result).to.include(\"title\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/categories/{{market-id}}/{{article-category-external-id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"categories",
+						"{{market-id}}",
+						"{{article-category-external-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find categories by external id for wrong combination of marketId and external id giving wrong market id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4695f55-b9e7-4ff4-98b4-d82479a44350",
+						"exec": [
+							"pm.test(\"Status code is 400\", function() {",
+							"pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/categories/{{invalid.market-id}}/{{article-category-external-id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"categories",
+						"{{invalid.market-id}}",
+						"{{article-category-external-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find categories by external id for wrong combination of marketId and external id giving wrong external id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5db5fe60-2dc6-4d2e-b1de-f865b336aa7f",
+						"exec": [
+							"pm.test(\"Status code is 404\", function() {",
+							"pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/articles/categories/{{market-id}}/{{invalid.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"articles",
+						"categories",
+						"{{market-id}}",
+						"{{invalid.external_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5363bdc3-8ada-4b55-9290-510b01a87996",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f2586fd6-80e9-4a01-a908-966ffe7f67b0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

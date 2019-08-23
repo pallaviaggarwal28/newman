@@ -1,0 +1,61 @@
+{
+  "collections": [
+    {
+      "name": "OS-Bluetooth_APIs.postman_collection.json",
+      "localEnv": "",
+      "iterationCount": "1",
+      "data": {
+        "uk":{
+          "name": "bluetooth.json",
+          "iterationCount": "1"
+        }
+      }
+    },
+    {
+      "name": "OS-CarSystem_APIs.postman_collection.json",
+      "localEnv": "",
+      "data": {
+        "uk":{
+          "name": "carSystems.json",
+          "iterationCount": "3"
+        }
+      }
+    },
+    {
+      "name": "OS-Market_APIs.postman_collection.json",
+      "localEnv": "",
+      "data": {
+        "uk":{
+          "name": "market.json",
+          "iterationCount": "1"
+        }
+      }
+    },
+    {
+      "name": "OS-OwnersInformation_APIs.postman_collection.json",
+      "localEnv": "",
+      "data": {
+        "uk":{
+          "name": "ownersInfo.json",
+          "iterationCount": "1"
+        }
+      }
+    },
+    {
+      "name": "OS-Articles_APIs.postman_collection.json",
+      "localEnv": "",
+      "data": {
+        "uk":{
+          "name": "articles.json",
+          "iterationCount": "1"
+        }
+      }
+    }
+  ],
+  "globalEnvironment":{
+    "development": "development.postman_environment.json",
+    "staging": "",
+    "local-docker": "local-docker.postman_environment.json",
+    "docker": "docker.postman_environment.json"
+  }
+}

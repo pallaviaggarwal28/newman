@@ -1,0 +1,940 @@
+{
+	"info": {
+		"_postman_id": "4f3e63a4-7189-47d9-ab73-d2d829575792",
+		"name": "OS - OwnersInformation API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Find customer owners information per market for a valid market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "76888383-8b0d-4fad-9566-6d02ffc1b9c5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body does not contain blank arrays\",function() {",
+							"var resultJson = pm.response.json();",
+							"var result = pm.response.text();",
+							"    pm.expect(resultJson.data).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(result).to.include(\"marketId\");",
+							"    pm.expect(result).to.include(\"displayName\");",
+							"    pm.expect(result).to.include(\"projectCode\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/cars",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"cars"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "15"
+						},
+						{
+							"key": "pageNumber",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find customer owners information per market for an invalid market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "41f00a56-bade-4719-9914-a8a7a28135e6",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Body matches string\",function() {",
+							"var result = pm.response.text();",
+							"    pm.expect(result).to.include(\"path param market must be one of\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{invalid.market-id}}/cars",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{invalid.market-id}}",
+						"cars"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "15"
+						},
+						{
+							"key": "pageNumber",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find customer owners information per market for the market with no data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "43ebfca0-a0ef-40f1-b477-15c2253d884d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body contains blank array\",function() {",
+							"var resultJson = pm.response.json();",
+							"    pm.expect(resultJson.data).to.be.an(\"array\").that.is.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/cars",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{no.data.market-id}}",
+						"cars"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "15"
+						},
+						{
+							"key": "pageNumber",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all car models for valid market-id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "68ecbc30-655a-48f9-9cd7-36e174ca4ec6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body does not contain blank arrays\",function() {",
+							"var resultJson = pm.response.json();",
+							"var result = pm.response.text();",
+							"    pm.expect(resultJson).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(result).to.include(\"marketId\");",
+							"    pm.expect(result).to.include(\"displayName\");",
+							"    pm.expect(result).to.include(\"projectCode\");",
+							"});"
+
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/cars/models",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"cars",
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all car models for market with no data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6ebb2027-210b-46d3-bc40-ab80908c7e9a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body contains blank arrays\",function() {",
+							"var resultJson = pm.response.json();",
+							"    pm.expect(resultJson).to.be.an(\"array\").that.is.empty;",
+							"});"
+
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/cars/models",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{no.data.market-id}}",
+						"cars",
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the owners information by project-code and structure-week for a specific valid market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2d0c76cc-80df-4b37-827c-74b0cd2f3856",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body contains data\", function() {",
+							"var result = pm.response.text();",
+							"var resultJson = pm.response.json();",
+							"pm.expect(resultJson.carSystems).to.be.an(\"array\").that.is.not.empty",
+							"pm.expect(result).to.include(\"marketId\")",
+							"pm.expect(result).to.include(\"projectCode\")",
+							"pm.expect(result).to.include(\"structureWeek\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/cars/{{project_code}}/{{structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"cars",
+						"{{project_code}}",
+						"{{structure_week}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the owners information by invalid project-code and valid structure-week for a specific market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a09f4415-4713-4e3e-9856-08a4cb9e7a7f",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/cars/{{invalid.project_code}}/{{structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"cars",
+						"{{invalid.project_code}}",
+						"{{structure_week}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the owners information by valid project-code and invalid structure-week for a specific market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c15894a-d95b-4cd9-8b35-bbbd91322119",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/cars/{{project_code}}/{{invalid.structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"cars",
+						"{{project_code}}",
+						"{{invalid.structure_week}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the owners information by project-code and structure-week but with wrong combination of market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c15894a-d95b-4cd9-8b35-bbbd91322119",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/cars/{{project_code}}/{{structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{no.data.market-id}}",
+						"cars",
+						"{{project_code}}",
+						"{{structure_week}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the category information by project-code,structure-week and external id for a specific valid market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "41005113-512f-45e8-8887-9167fd4bd17a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body contains String and do not contain blank arrays\", function() {",
+							"var result = pm.response.text();",
+							"var resultJson = pm.response.json();",
+							"pm.expect(resultJson.articles).to.be.an(\"array\").that.is.not.empty",
+							"pm.expect(result).to.include(\"externalId\");",
+							"pm.expect(result).to.include(\"title\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/manual-category/{{project_code}}/{{structure_week}}/{{ownerInfo-category-external-id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"manual-category",
+						"{{project_code}}",
+						"{{structure_week}}",
+						"{{ownerInfo-category-external-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the category information by project-code,structure-week and external id with wrong combination of market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c5265d1a-3686-4a69-b12d-f042942dbdf5",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{invalid.market-id}}/manual-category/{{project_code}}/{{structure_week}}/{{ownerInfo-category-external-id}}",
+					"host": [
+						"{{url}}"
+
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{invalid.market-id}}",
+						"manual-category",
+						"{{project_code}}",
+						"{{structure_week}}",
+						"{{ownerInfo-category-external-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the category information by invalid project-code , valid structure-week and external id with specific market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "596c95d8-08f9-4b69-9614-a9fb244e8842",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/manual-category/{{invalid.project_code}}/{{structure_week}}/{{ownerInfo-category-external-id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"manual-category",
+						"{{invalid.project_code}}",
+						"{{structure_week}}",
+						"{{ownerInfo-category-external-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the category information by valid project-code ,structure-week and invalid external id with specific market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "055c0eff-8470-4067-b1e8-025174a66e0b",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/manual-category/{{project_code}}/{{structure_week}}/{{invalid.external_id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"manual-category",
+						"{{project_code}}",
+						"{{structure_week}}",
+						"{{invalid.external_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the category information by valid project-code ,external id and invalid structure-week with specific market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6bb687d6-8a30-4964-a2f1-1c1ef7998cca",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/manual-category/{{project_code}}/{{invalid.structure_week}}/{{ownerInfo-category-external-id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"manual-category",
+						"{{project_code}}",
+						"{{invalid.structure_week}}",
+						"{{ownerInfo-category-external-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the manual category navigation structure of a car by project-code and structure-week for a specific valid market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4927ad98-fdf4-49cd-b87d-90059f6748e2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches String and does not contain blank arrays\",function() {",
+							"var resultJson = pm.response.json();",
+							"var result = pm.response.text();",
+							"pm.expect(resultJson.categories).to.be.an(\"array\").that.is.not.empty;",
+							"pm.expect(resultJson.categories[0].subCategories).to.be.an(\"array\").that.is.not.empty;",
+							"pm.expect(result).to.include(\"externalId\")",
+							"pm.expect(result).to.include(\"title\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/manual-index/{{project_code}}/{{structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"manual-index",
+						"{{project_code}}",
+						"{{structure_week}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the manual category navigation structure of a car by project-code and structure-week for a wrong combination of market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e2370486-e8d1-4563-9796-c6d2e19aa0c9",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/manual-index/{{project_code}}/{{structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{no.data.market-id}}",
+						"manual-index",
+						"{{project_code}}",
+						"{{structure_week}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the manual category navigation structure of a car by invalid project-code and valid structure-week for a specific market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5993a9b1-0915-4066-b830-5ce14bfbcc31",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/manual-index/{{invalid.project_code}}/{{structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"manual-index",
+						"{{invalid.project_code}}",
+						"{{structure_week}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find the manual category navigation structure of a car by valid project-code and invalid structure-week for a specific market",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "426b61e1-bcfa-4545-ae40-3f76d85499ba",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/{{version.1}}/owners-information/{{market-id}}/manual-index/{{project_code}}/{{invalid.structure_week}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{version.1}}",
+						"owners-information",
+						"{{market-id}}",
+						"manual-index",
+						"{{project_code}}",
+						"{{invalid.structure_week}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5363bdc3-8ada-4b55-9290-510b01a87996",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f2586fd6-80e9-4a01-a908-966ffe7f67b0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

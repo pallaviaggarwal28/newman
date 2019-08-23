@@ -1,0 +1,17 @@
+[
+  {
+    "market-id": "uk",
+    "type": "map",
+    "name": "MMM+"
+  },
+  {
+    "market-id": "uk",
+    "type": "speech",
+    "name": "spa"
+  },
+  {
+    "market-id": "uk",
+    "type": "gracenote",
+    "name": "spa"
+  }
+]
