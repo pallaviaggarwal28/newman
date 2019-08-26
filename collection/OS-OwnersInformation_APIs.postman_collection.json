@@ -126,64 +126,6 @@
 			"response": []
 		},
 		{
-			"name": "Find customer owners information per market for the market with no data",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "43ebfca0-a0ef-40f1-b477-15c2253d884d",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"pm.test(\"Body contains blank array\",function() {",
-							"var resultJson = pm.response.json();",
-							"    pm.expect(resultJson.data).to.be.an(\"array\").that.is.empty;",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/cars",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"{{version.1}}",
-						"owners-information",
-						"{{no.data.market-id}}",
-						"cars"
-					],
-					"query": [
-						{
-							"key": "pageSize",
-							"value": "15"
-						},
-						{
-							"key": "pageNumber",
-							"value": "0"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Find all car models for valid market-id",
 			"event": [
 				{
@@ -230,56 +172,6 @@
 						"{{version.1}}",
 						"owners-information",
 						"{{market-id}}",
-						"cars",
-						"models"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Find all car models for market with no data",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "6ebb2027-210b-46d3-bc40-ab80908c7e9a",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"pm.test(\"Body contains blank arrays\",function() {",
-							"var resultJson = pm.response.json();",
-							"    pm.expect(resultJson).to.be.an(\"array\").that.is.empty;",
-							"});"
-
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/cars/models",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"{{version.1}}",
-						"owners-information",
-						"{{no.data.market-id}}",
 						"cars",
 						"models"
 					]
@@ -428,52 +320,6 @@
 						"cars",
 						"{{project_code}}",
 						"{{invalid.structure_week}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Find the owners information by project-code and structure-week but with wrong combination of market",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "5c15894a-d95b-4cd9-8b35-bbbd91322119",
-						"exec": [
-							"pm.test(\"Status code is 404\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/cars/{{project_code}}/{{structure_week}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"{{version.1}}",
-						"owners-information",
-						"{{no.data.market-id}}",
-						"cars",
-						"{{project_code}}",
-						"{{structure_week}}"
 					]
 				}
 			},
@@ -768,52 +614,6 @@
 						"{{version.1}}",
 						"owners-information",
 						"{{market-id}}",
-						"manual-index",
-						"{{project_code}}",
-						"{{structure_week}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Find the manual category navigation structure of a car by project-code and structure-week for a wrong combination of market",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "e2370486-e8d1-4563-9796-c6d2e19aa0c9",
-						"exec": [
-							"pm.test(\"Status code is 404\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{url}}/{{version.1}}/owners-information/{{no.data.market-id}}/manual-index/{{project_code}}/{{structure_week}}",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"{{version.1}}",
-						"owners-information",
-						"{{no.data.market-id}}",
 						"manual-index",
 						"{{project_code}}",
 						"{{structure_week}}"
