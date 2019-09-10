@@ -75,8 +75,8 @@ for collection in ${COLLECTIONS_LIST} ; do
         data_file_name=$(jq -r .data.${MARKET_NAME}.name temp.json )
         iteration_count=$(jq -r .data.${MARKET_NAME}.iterationCount temp.json )
 
-        if [[ -f "${DIR}/data/${MARKET_NAME}/${data_file_name}" ]] ; then
-           DATA="--iteration-data ${DIR}/data/${MARKET_NAME}/${data_file_name} --iteration-count ${iteration_count}"
+        if [[ -f "${DIR}/data/${ENV_PROP}/${MARKET_NAME}/${data_file_name}" ]] ; then
+           DATA="--iteration-data ${DIR}/data/${ENV_PROP}/${MARKET_NAME}/${data_file_name} --iteration-count ${iteration_count}"
         else
            echo "ERROR: No data file to run the tests for market: ${MARKET_NAME}"
            continue
@@ -94,8 +94,8 @@ for collection in ${COLLECTIONS_LIST} ; do
             data_file_name=$(jq -r .data.${market}.name temp.json )
             iteration_count=$(jq -r .data.${market}.iterationCount temp.json )
 
-            if [[ -f "${DIR}/data/${market}/${data_file_name}" ]] ; then
-                DATA="--iteration-data ${DIR}/data/${market}/${data_file_name} --iteration-count ${iteration_count}"
+            if [[ -f "${DIR}/data/${ENV_PROP}/${market}/${data_file_name}" ]] ; then
+                DATA="--iteration-data ${DIR}/data/${ENV_PROP}/${market}/${data_file_name} --iteration-count ${iteration_count}"
             else
                 echo "ERROR: No data file to run the tests for market: ${market}"
                 continue
