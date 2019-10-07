@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "d97dc851-3a43-4b0a-bf62-76449b15c591",
+		"name": "SSA-Adapter_APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get modified contracts and subscriptions from SSA Adapter",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7809919-4b22-4bd9-9fd7-633c8afe170b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.data.json()).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(pm.response.data.servicesIncluded.json()).to.be.an(\"array\").that.is.not.empty;",
+							"    pm.expect(pm.response.text()).to.include(\"vin\");",
+							"    pm.expect(pm.response.text()).to.include(\"customerType\");",
+							"    pm.expect(pm.response.text()).to.include(\"cdbIdOrganisation\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/vnd.volvocars.api.ssa.adapter.subscriptionresponse.v1+json"
+					},
+					{
+						"key": "VCC-Api-Key",
+						"value": "{{SubscriptionKey}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/ssa/markets/{{market}}/subscriptions?fromDate=&toDate=",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ssa",
+						"markets",
+						"{{market}}",
+						"subscriptions"
+					],
+					"query": [
+						{
+							"key": "fromDate",
+							"value": "{{fromDate}}"
+						},
+						{
+							"key": "toDate",
+							"value": "{{toDate}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9bc32490-77a3-40ab-b6db-91758ca5bef8",
+				"type": "text/javascript",
+				"exec": [
+					"var moment = require('moment');",
+					"var toDate = moment()",
+					"var fromDate = moment.subtract(1, \"days\")",
+					"pm.globals.set(\"toDate\", toDate.format(\"MM/DD/YYYY\"))",
+					"pm.globals.set(\"fromDate\", fromDate.format(\"MM/DD/YYYY\"))"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9a9341a2-6887-411a-b2ee-3ee2134fac33",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

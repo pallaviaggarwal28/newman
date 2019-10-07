@@ -1,0 +1,12 @@
+{
+  "name": "ssa-apis-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "ISC",
+  "devDependencies": {
+    "newman": "~4.5.5",
+    "comment": "~0.0.2"
+  },
+  "dependencies": {}
+}

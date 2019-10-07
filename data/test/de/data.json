@@ -1,0 +1,11 @@
+{
+  "id": "03a516fe-bab3-4828-bc38-5638bcd1ad73",
+  "name": "test_Env_data",
+  "values": [
+    {
+      "key": "market",
+      "value": "DE",
+      "enabled": true
+    }
+  ]
+}

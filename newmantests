@@ -11,8 +11,8 @@ while getopts 'e:c:m:' OPTION; do
     case "$OPTION" in
         e) envfile="${OPTARG}"
            if [ "$envfile" == "" ] || [ -z "${envfile}" ] ; then
-             ENV_PROP="development"
-             echo "Running tests on development env, as no env was provided"
+             ENV_PROP="test"
+             echo "Running tests on test env, as no env was provided"
            else
              ENV_PROP="$envfile"
              echo $ENV_PROP

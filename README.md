@@ -1,6 +1,6 @@
-# Support-Backend API Tests
+# SSA Adapteer API Tests
 
-This project contains smoke/functional tests for Support Backend APIs. These will be run across all the mentioned markets.
+This project contains tests for SSA Adapter APIs. These will be run across all the mentioned markets.
 
 ## Prerequisite
 
